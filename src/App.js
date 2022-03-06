@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./index.css";
+import { Motion, spring, presets } from "react-motion";
 
-function App() {
+export default function App() {
+  const [startAnimation, setAnimation] = useState(false);
+  const initialStyle = { opacity: 0, translateY: 30 };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Motion
+        style={
+          startAnimation
+            ? {
+                opacity: spring(1),
+                translateY: spring(5, presets.wobbly)
+              }
+            : initialStyle
+        }
+      >
+        {interpolatedStyles => (
+          <div
+            style={{
+              transform: `translateY(${interpolatedStyles.translateY}px)`,
+              opacity: interpolatedStyles.opacity
+            }}
+          >
+            <h1>Triggered Animation</h1>
+          </div>
+        )}
+      </Motion>
+      <button onClick={() => setAnimation(true)}>Trigger Animation</button>
+      <button onClick={() => setAnimation(false)}>Reset Animation</button>
     </div>
   );
 }
-
-export default App;
